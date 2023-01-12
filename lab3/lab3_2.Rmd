@@ -75,14 +75,15 @@ levels(hot_springs$scientist)
 
 The data are from: Gaeta J., G. Sass, S. Carpenter. 2012. Biocomplexity at North Temperate Lakes LTER: Coordinated Field Studies: Large Mouth Bass Growth 2006. Environmental Data Initiative.  [link](https://portal.edirepository.org/nis/mapbrowse?scope=knb-lter-ntl&identifier=267)  
 ```{r}
-fish <- Gaeta_etal_CLC_data 
+
+fish <- Gaeta_etal_CLC_data_csv 
 
 
 ```
 
 2. What is the structure of these data?
 ```{r}
-str(Gaeta_etal_CLC_data)
+str(fish)
 
 ```
 lakeid and annnumber are character type,the rest are numerical. 
@@ -152,6 +153,7 @@ little_fish
 ## Practice
 1. Load the data `mammal_lifehistories_v2.csv` and place it into a new object called `mammals`.
 ```{r}
+
 mammals <- mammal_lifehistories_v2
 ```
 
