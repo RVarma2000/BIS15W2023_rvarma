@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 output:
   html_document:
     theme: spacelab
-    toc: no
+    toc: yes
 ---
 
 ## Instructions
@@ -21,14 +21,13 @@ library(tidyverse)
 ## Mammals Sleep
 1. For this assignment, we are going to use built-in data on mammal sleep patterns. From which publication are these data taken from? Since the data are built-in you can use the help function in R.
 ```{r}
-str(mammals_sleep_allison_cicchetti_1976)
+library(readr)
+sleep <- read_csv("mammals_sleep_allison_cicchetti_1976.csv")
 ```
 This data is taken from allison cicchetti 1976
 
 2. Store these data into a new data frame `sleep`.
-```{r}
-sleep <- mammals_sleep_allison_cicchetti_1976
-```
+Completed in first question.  
 
 3. What are the dimensions of this data frame (variables and observations)? How do you know? Please show the *code* that you used to determine this below.  
 ```{r}
@@ -38,6 +37,7 @@ dim(sleep)
 
 4. Are there any NAs in the data? How did you determine this? Please show your code.  
 ```{r}
+anyNA(sleep)
 table(sleep==-999)
 ```
 There are 38 numbers that aren't real data, but none of them are represented as NAs as shown by the above function which returned TRUE for 38 values. 
@@ -51,7 +51,8 @@ colnames(sleep)
 
 6. How many herbivores are represented in the data?  
 ```{r}
-sum(sleep[9]==5)
+herbivore_count <- sum(sleep[,9]==5)
+view(herbivore_count)
 ```
 There are 14 herbivores 
 
@@ -89,10 +90,10 @@ On average small animals sleep longer.
 
 10. Which animal is the sleepiest among the entire dataframe?
 ```{r}
-sleepiest <- max(sleep$`total sleep (hrs/day)  (sum of slow wave and paradoxical sleep)`)
-print(sleep[33,])
+which.max(sleep$`total sleep (hrs/day)  (sum of slow wave and paradoxical sleep)`)
+sleep[33,]
 ```
-The Brown Bat is the sleepiest animal in the data frame
+The Little Brown Bat is the sleepiest animal in the data frame
 ```{r}
 
 ```
