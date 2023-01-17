@@ -62,8 +62,9 @@ mean_temps
 7. Add this as a new column in the data matrix.  
 
 ```{r}
-new_spring_matrix <- cbind(spring_matrix,mean_temps)
+spring_matrix_with_mean <- cbind(spring_matrix,mean_temps)
 new_spring_matrix
+
 ```
 
 8. Show Susan's value for Opal Spring only.
@@ -83,16 +84,35 @@ mean(jill_col)
 10. Use the data matrix to perform one calculation or operation of your interest.
 
 ```{r}
+#my friend Hugo Moncada dictated the for loop code for me 
 stdev = NULL
 for (i in 1:nrow(spring_matrix)){
-  stdev [i]=sd(spring_matrix[i,])
+  stdev [i]= sd(spring_matrix[i,])
 }
 
 newer_spring_matrix <- cbind(new_spring_matrix, stdev)
-newer_spring_matrix
-
 ```
+
+
 ```{r}
+library("reshape2")
+
+long_form_sm <- melt(new_spring_matrix[,-c(4)])
+long_form_sm
+names(long_form_sm) <- c("Hot_Spring", "Scientists","Hot_Spring_Temp")
+
+library("ggplot2")
+ggplot(long_form_sm, aes(x=Hot_Spring, y=Hot_Spring_Temp, colour=Scientists)) + 
+  geom_point() + 
+  theme(text = element_text(size=9), 
+        axis.text.x = element_text(angle=90, hjust=1))
+```
+
+
+
+```{r}
+#I found this code on the internet and changed it to fit our situation
+
 library(reshape2)
 library(ggplot2)
 
@@ -107,7 +127,7 @@ ggplot(longData, aes(x = Var2, y = Var1)) +
                      axis.text.y=element_text(size=9),
                      plot.title=element_text(size=11))
 
-##I found this code on the internet and changed it to fit our situation
+
 ```
 
 
