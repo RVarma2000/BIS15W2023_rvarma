@@ -38,21 +38,29 @@ dim(sleep)
 4. Are there any NAs in the data? How did you determine this? Please show your code.  
 ```{r}
 anyNA(sleep)
-table(sleep==-999)
+any(sleep[,]==-999)
+count <- which(sleep[,]==-999)
+glimpse(count)
+
 ```
-There are 38 numbers that aren't real data, but none of them are represented as NAs as shown by the above function which returned TRUE for 38 values. 
+There are 38 numbers that aren't real data, but none of them are represented as NAs as shown by the above function which showed that there are 38 observations with the value -999. 
+
+#Replace -999 with NA 
+```{r}
+sleep[sleep[,]==-999.0] <- NA
+ 
+```
 
 
 
 5. Show a list of the column names is this data frame.
 ```{r}
-colnames(sleep)
+names(sleep)
 ```
 
 6. How many herbivores are represented in the data?  
 ```{r}
 herbivore_count <- sum(sleep[,9]==5)
-view(herbivore_count)
 ```
 There are 14 herbivores 
 
@@ -60,14 +68,13 @@ There are 14 herbivores
 ```{r}
 large <- subset(sleep, sleep[2]>=200)  
 small <- subset(sleep, sleep[2]<=1)
+names(large)
 ```
 
 8. What is the mean weight for both the small and large mammals?
 ```{r}
-large_weight <- large$`body weight in kg`
-small_weight <- small$`body weight in kg`
-mean(large_weight)
-mean(small_weight)
+mean(large$`body weight in kg`)
+mean(small$`body weight in kg`)
 ```
 Mean weight for small mammals is 0.33kg 
 Mean weight for large animals is 1596 kg 
@@ -75,14 +82,14 @@ Mean weight for large animals is 1596 kg
 
 9. Using a similar approach as above, do large or small animals sleep longer on average?  
 ```{r}
-large_sleep <- large$`total sleep (hrs/day)  (sum of slow wave and paradoxical sleep)`
-y <- large_sleep[-c(4,7)]
-mean(y)
+large_sleep <- (large$`total sleep (hrs/day)  (sum of slow wave and paradoxical sleep)`)
+mean(large_sleep, na.rm = TRUE)
+
 ```
 
 ```{r}
 small_sleep <- small$`total sleep (hrs/day)  (sum of slow wave and paradoxical sleep)`
-mean(small_sleep)
+mean(small_sleep, na.rm=TRUE)
 
 ```
 On average small animals sleep longer. 
@@ -90,13 +97,61 @@ On average small animals sleep longer.
 
 10. Which animal is the sleepiest among the entire dataframe?
 ```{r}
-which.max(sleep$`total sleep (hrs/day)  (sum of slow wave and paradoxical sleep)`)
-sleep[33,]
+sleep[which.max(sleep$`total sleep (hrs/day)  (sum of slow wave and paradoxical sleep)`),]
 ```
 The Little Brown Bat is the sleepiest animal in the data frame
+
+
+
 ```{r}
 
+names(sleep)
+sleep %>%
+ggplot(aes(`gestation time (days)`, `maximum life span (years)`))+
+  geom_point(aes(colour = `predation index (1-5)`,
+                 size = `total sleep (hrs/day)  (sum of slow wave and paradoxical sleep)`)) +
+  labs(x="Gestation Time (Days)",
+       y="Max Life Span (Years)",
+       color = "Predation Index", 
+       size = "Total Sleep (hrs/day)")
+             
+          
 ```
+
+#Create another plot
+
+```{r}
+names(sleep)
+sleep %>%
+ggplot(aes(`maximum life span (years)`,`gestation time (days)`))+
+  geom_smooth()+
+   geom_point(aes(colour = `predation index (1-5)`,
+                 size = `total sleep (hrs/day)  (sum of slow wave and paradoxical sleep)`)) +
+    labs(y="Gestation Time (Days)",
+       x="Max Life Span (Years)",
+       color = "Predation Index", 
+       size = "Total Sleep (hrs/day)")
+
+           
+         
+
+```
+
+```{r}
+names(sleep)
+small %>%
+ggplot(aes(`maximum life span (years)`,`gestation time (days)`))+
+  geom_point(aes(colour = `predation index (1-5)`,
+                 size = `total sleep (hrs/day)  (sum of slow wave and paradoxical sleep)`, 
+                 alpha = 0.99))+
+  labs(x="Gestation Time (Days)",
+       y="Max Life Span (Years)",
+       color = "Predation Index", 
+       size = "Total Sleep (hrs/day)")
+
+```
+
+
 
 ## Push your final code to GitHub!
 Please be sure that you check the `keep md` file in the knit preferences.   

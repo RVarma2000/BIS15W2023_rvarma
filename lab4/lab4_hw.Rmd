@@ -30,24 +30,134 @@ Reference: Tamburello N, Cote IM, Dulvy NK (2015) Energy and the scaling of anim
 Data: http://datadryad.org/resource/doi:10.5061/dryad.q5j65/1  
 
 **1. Load the data into a new object called `homerange`.**
+```{r}
+
+homerange <- read_csv("data2/Tamburelloetal_HomeRangeDatabase.csv")
+
+```
 
 **2. Explore the data. Show the dimensions, column names, classes for each variable, and a statistical summary. Keep these as separate code chunks.**  
+### a. Data Dimensions 
+```{r}
+dim(homerange)
+```
+### b. Column Names
+```{r}
+names(homerange)
+```
+### c. Variable Classes
+```{r}
+glimpse(homerange)
+```
+### d. Statistical Summary 
+```{r}
+summary(homerange)
+```
+
 
 **3. Change the class of the variables `taxon` and `order` to factors and display their levels.**  
+### Change class of `taxon`
+```{r}
+homerange$taxon <- as.factor(homerange$taxon)
+str(homerange$taxon)
+```
+### Change class of `order`
+
+```{r}
+homerange$order <- as.factor(homerange$order)
+str(homerange$order)
+```
 
 **4. What taxa are represented in the `homerange` data frame? Make a new data frame `taxa` that is restricted to taxon, common name, class, order, family, genus, species.**  
+### Taxa in homerange
+```{r}
+unique(homerange$taxon)
+```
+### New dataframe `taxa`
+```{r}
+taxa <- select(homerange, taxon, common.name, class, order, family, genus, species)
+```
 
 **5. The variable `taxon` identifies the large, common name groups of the species represented in `homerange`. Make a table the shows the counts for each of these `taxon`.**  
+### Taxon Count Table
+```{r}
+taxon_count <- count(taxa, taxon)
+taxon_count
+```
 
-**6. The species in `homerange` are also classified into trophic guilds. How many species are represented in each trophic guild.**  
+
+**6. The species in `homerange` are also classified into trophic guilds. How many species are represented in each trophic guild.** 
+
+### No. of species in each trophic guild 
+```{r}
+trophic_guild_count <- count(homerange, trophic.guild)
+trophic_guild_count
+```
+
 
 **7. Make two new data frames, one which is restricted to carnivores and another that is restricted to herbivores.**  
 
+### Carnivore DF 
+```{r}
+carnivores <- filter(homerange, trophic.guild == 'carnivore')
+```
+### Herbivore DF 
+```{r}
+herbivores <- filter(homerange, trophic.guild != 'carnivore')
+```
+
+
 **8. Do herbivores or carnivores have, on average, a larger `mean.hra.m2`? Remove any NAs from the data.**  
+
+### Confirm if NAs in DFs = True 
+```{r}
+anyNA(carnivores$`mean.hra.m2`)
+anyNA(herbivores$mean.hra.m2)
+```
+### Calculate mean of mean.hra.m2 of herbivores and carnivores 
+```{r}
+mean(carnivores$mean.hra.m2)
+mean(herbivores$mean.hra.m2)
+```
+Average mean.hra.m2 is larger for herbivores 
+
 
 **9. Make a new dataframe `deer` that is limited to the mean mass, log10 mass, family, genus, and species of deer in the database. The family for deer is cervidae. Arrange the data in descending order by log10 mass. Which is the largest deer? What is its common name?**  
 
+### New Deer DF
+
+```{r}
+
+deer <- filter(herbivores, family == 'cervidae')
+deer <- select(deer, mean.mass.g, log10.mass, family, genus, species)
+
+```
+
+### Arrange deer df in descending by log10 mass 
+
+```{r}
+arrange(deer, desc(log10.mass) )
+```
+### Find common name of alces alces 
+
+```{r}
+filter(homerange, species == 'alces')
+```
+The common name of alces alces is moose. 
+
 **10. As measured by the data, which snake species has the smallest homerange? Show all of your work, please. Look this species up online and tell me about it!** **Snake is found in taxon column**    
+
+### Make `snake` DF
+
+```{r}
+snake <- filter(homerange, taxon == 'snakes')
+```
+### Arrange snake DF by homerange in ascending order 
+
+```{r}
+snake <- order(snake, `homerange`)
+```
+
 
 ## Push your final code to GitHub!
 Please be sure that you check the `keep md` file in the knit preferences.   

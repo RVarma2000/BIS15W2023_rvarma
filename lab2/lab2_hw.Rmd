@@ -63,20 +63,20 @@ mean_temps
 
 ```{r}
 spring_matrix_with_mean <- cbind(spring_matrix,mean_temps)
-new_spring_matrix
+
 
 ```
 
 8. Show Susan's value for Opal Spring only.
 ```{r}
-new_spring_matrix[2,3]
+spring_matrix_with_mean[2,3]
 ```
 
 
 9. Calculate the mean for Jill's column only. 
 
 ```{r}
-jill_col <- new_spring_matrix[,1]
+jill_col <- spring_matrix_with_mean[,1]
 mean(jill_col)
 ```
 
@@ -90,14 +90,14 @@ for (i in 1:nrow(spring_matrix)){
   stdev [i]= sd(spring_matrix[i,])
 }
 
-newer_spring_matrix <- cbind(new_spring_matrix, stdev)
+newer_spring_matrix <- cbind(spring_matrix_with_mean, stdev)
 ```
 
 
 ```{r}
 library("reshape2")
 
-long_form_sm <- melt(new_spring_matrix[,-c(4)])
+long_form_sm <- melt(spring_matrix_with_mean[,-c(4)])
 long_form_sm
 names(long_form_sm) <- c("Hot_Spring", "Scientists","Hot_Spring_Temp")
 
