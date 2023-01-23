@@ -80,7 +80,7 @@ The same methods of selecting elements in vectors and data matrices apply to dat
 
 The first row.  
 ```{r}
-hbirds[1,]
+hbirds[2,]
 ```
 
 The third column.  
@@ -91,6 +91,7 @@ hbirds[ ,3]
 We can also select values in an entire column using the `$` sign. This can be useful for calculations. Here we calculate the mean of all of the birds weights. 
 ```{r}
 w <- hbirds$weight_oz
+w
 mean(w)
 ```
 
@@ -141,15 +142,14 @@ names(hspring)
 
 3. Our scientists forgot to record the depth data for each spring. Here it is as a vector, add it as a new column called depth_ft: `c(4.15, 4.13, 4.12, 3.21, 3.23, 3.20, 5.67, 5.65, 5.66)`. Print out the data frame.
 ```{r}
-depth_ft <- c(4.15, 4.13, 4.12, 3.21, 3.23, 3.20, 5.67, 5.65, 5.66)
-hspring <- cbind(hspring, depth_ft)
+hspring$depth_ft <- c(4.15, 4.13, 4.12, 3.21, 3.23, 3.20, 5.67, 5.65, 5.66)
 hspring
 ```
 
 4. Calculate the mean temperature of all of the temperature measurements.
 ```{r}
-mean_temp <- hspring$temp_c
-mean(mean_temp)
+temps <- hspring$temp_c
+mean(temps)
 ```
 
 5. Save your hot springs data as a `.csv` file! Do not allow row names. 
