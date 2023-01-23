@@ -6,6 +6,7 @@ output:
   html_document:
     theme: spacelab
     toc: yes
+  keep_md: yes
 ---
 
 ## Instructions

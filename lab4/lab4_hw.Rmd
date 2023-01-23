@@ -1,6 +1,6 @@
 ---
 title: "Lab 4 Homework"
-author: "Please Add Your Name Here"
+author: "Ritwik Varma"
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -81,8 +81,7 @@ taxa <- select(homerange, taxon, common.name, class, order, family, genus, speci
 **5. The variable `taxon` identifies the large, common name groups of the species represented in `homerange`. Make a table the shows the counts for each of these `taxon`.**  
 ### Taxon Count Table
 ```{r}
-taxon_count <- count(taxa, taxon)
-taxon_count
+count(taxa, taxon)
 ```
 
 
@@ -90,8 +89,8 @@ taxon_count
 
 ### No. of species in each trophic guild 
 ```{r}
-trophic_guild_count <- count(homerange, trophic.guild)
-trophic_guild_count
+count(homerange, trophic.guild)
+
 ```
 
 
@@ -155,8 +154,43 @@ snake <- filter(homerange, taxon == 'snakes')
 ### Arrange snake DF by homerange in ascending order 
 
 ```{r}
-snake <- order(snake, `homerange`)
+arrange(snake, snake$homerange, by_group = FALSE)
 ```
+
+
+
+###11. Make 2 side-by-side line graphs grouped by thermoregeulation. X axis/ Independent Variable = Homerange. Y axis/Dependent Variable = mean mass. Color = trophic level, size = N. 
+
+####Confirm if NA in any of the relevant variables. 
+
+#```{r}
+anyNA.data.frame(homerange)
+
+```
+
+
+
+
+
+#```{r}
+
+homerange %>%
+  ggplot(aes(log10.hra,log10.mass))+
+         geom_point(size = 3, alpha = 0.5, if homerange$trophic.guild == "carnivore", "red" else, "darkgreen") 
+         facet_wrap(~thermoregulation)
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## Push your final code to GitHub!
