@@ -1,0 +1,57 @@
+---
+title: "lab 6 warmup"
+author: "RVarma2000"
+date: "2023-01-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+Load libraries 
+```{r}
+library(tidyverse)
+library(janitor)
+```
+
+open data 
+
+```{r}
+ecosphere <- read_csv("data/ecs21351-sup-0003-SupplementS1.csv", skip = 2)
+```
+Clean Names
+```{r}
+clean_names(ecosphere)
+```
+```{r}
+glimpse(ecosphere)
+```
+
+Change character to factors 
+```{r}
+ecosphere %>% 
+  mutate_if(is.character, as.factor) %>% 
+  names()
+  
+```
+
+count different diets 
+
+```{r}
+ecosphere %>% 
+tabyl(Diet) %>% 
+  arrange(desc(n))
+```
+
+which families are veggie?
+
+```{r}
+ecosphere %>% 
+  filter(Diet =="Vegetation") %>% 
+  select(Family) %>% 
+  unique()
+```
+

@@ -29,7 +29,7 @@ In the midterm 1 folder there is a second folder called `data`. Inside the `data
 
 Please load these data as a new object called `ecosphere`. In this step, I am providing the code to load the data, clean the variable names, and remove a footer that the authors used as part of the original publication.
 ```{r message=FALSE, warning=FALSE}
-ecosphere <- read_csv("data/ecs21351-sup-0003-SupplementS1.csv", skip=2) %>% 
+ecosphere <- read_csv("lab6/data/ecs21351-sup-0003-SupplementS1.csv", skip=2) %>% 
   clean_names() %>%
   slice(1:(n() - 18)) # this removes the footer
 ```
@@ -91,10 +91,8 @@ ducks %>%
 Problem 8. (4 points) In ducks, how is mean body mass associated with migratory strategy? Do the ducks that migrate long distances have high or low average body mass?
 ```{r}
 ducks %>% 
-  group_by(scientific_name) %>% 
-  summarize(mean_body_mass = mean(log10_mass), 
-            migratory_strategy = migratory_strategy) %>% 
-  arrange(migratory_strategy)
+  group_by(migratory_strategy) %>% 
+  summarize(mean_body_mass = mean(log10_mass))
 ```
 Ducks that migrate long distances have low mean body mass. 
 
@@ -108,22 +106,35 @@ eagles <- ecosphere %>%
 Problem 10. (4 points) In the eagles data, any species with a population size less than 250,000 individuals is threatened. Make a new column `conservation_status` that shows whether or not a species is threatened.
 ```{r}
 eagles %>% 
-  mutate_if(population_size<250,000, conservation_status = "threatened")
+  mutate(ifelse(population_size < 250000,"threatened", "not threatened"))
 ```
 
 Problem 11. (2 points) Consider the results from questions 9 and 10. Are there any species for which their threatened status needs further study? How do you know?
 ```{r}
-
+eagles %>% 
+  filter(is.na(population_size))
 ```
+These birds have NA population sizes 
 
 Problem 12. (4 points) Use the `ecosphere` data to perform one exploratory analysis of your choice. The analysis must have a minimum of three lines and two functions. You must also clearly state the question you are attempting to answer.
-```{r}
 
+How does diet correlate with mass for wetland inhabiting species? 
+```{r}
+ecosphere %>%
+  group_by(diet) %>% 
+  filter(habitat == "Wetland") %>% 
+  summarize(mean_mass = mean(log10_mass)) %>% 
+  ggplot(aes(diet, mean_mass))+
+  geom_col()+
+  theme_bw()+
+  labs(title = "Wetland Species", 
+       x = "Diet", 
+       y = "Mean Log10 Mass")
 ```
 
 Please provide the names of the students you have worked with with during the exam:
 ```{r}
-
+#Gabriel
 ```
 
 Please be 100% sure your exam is saved, knitted, and pushed to your github repository. No need to submit a link on canvas, we will find your exam in your repository.
